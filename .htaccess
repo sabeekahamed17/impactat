@@ -1,0 +1,45 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/(?:\ Ballot169)?
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ https://www.impactatkay.com/$1 [L,R=301]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+ErrorDocument 404 /404
+
+RewriteRule ^index.php$ https://www.impactatkay.com/ [R=301,L]
+
+RewriteCond %{REQUEST_URI} ^/404/$
+RewriteRule ^(.*)$ <YourRelativePathToPHPFile>/404.php [L]
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access 15 days"
+ExpiresByType image/jpeg "access 15 days"
+ExpiresByType image/gif "access 15 days"
+ExpiresByType image/png "access 15 days"
+ExpiresByType text/css "access 15 days"
+ExpiresByType application/pdf "access 15 days"
+ExpiresByType application/javascript "access 15 days"
+ExpiresByType application/x-javascript "access 15 days"
+ExpiresByType application/x-shockwave-flash "access 15 days"
+ExpiresByType image/x-icon "access 15 days"
+ExpiresDefault "access 2 days"
+</IfModule>
+## EXPIRES CACHING ##
+
+<FilesMatch ".(ico|jpg|jpeg|png|gif|js|css|swf|svg|pdf|flv|mp3)$">
+<IfModule mod_expires.c>
+ExpiresActive on
+ExpiresDefault "access plus 1 month 2 days 3 hours"
+</IfModule>
+</FilesMatch>
